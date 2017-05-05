@@ -49,6 +49,16 @@ p {
   z-index: 1;
 }
 
+ul {
+  list-style: none;
+  margin-bottom: 25px;
+
+  li:before {
+    content: '— ';
+  }
+
+}
+
 a {
   text-decoration: none;
   border-bottom: 1px solid #fff;

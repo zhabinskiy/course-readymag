@@ -1,3 +1,16 @@
 .stages {
   margin-bottom: 56px;
 }
+
+.list-title {
+  margin-bottom: 0px;
+}
+
+.p-min-margin {
+  margin-bottom: 0px;
+
+  &:last-child {
+    margin-bottom: 56px;
+  }
+
+}
