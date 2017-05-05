@@ -1,4 +1,4 @@
-#Frontend Course. 1
+# Frontend Course. 1
 
 Сборка проекта
 ```bash
