@@ -2,32 +2,32 @@
 
 const gulp = require('gulp'),
       sass = require('gulp-sass'),
-      postcss = require('gulp-postcss'),
-      autoprefixer = require('autoprefixer'),
+      include = require('gulp-html-tag-include'),
       babel = require('gulp-babel'),
       concat = require('gulp-concat'),
       uglify = require('gulp-uglify'),
+      portfinder = require('portfinder'),
       plumber = require('gulp-plumber'),
-      broweserSync = require('broweser-sync'),
+      browserSync = require('browser-sync'),
       reload = browserSync.reload;
 
 const paths = {
-  styles: 'source/styles/',
+  styles: 'sources/styles/',
   css: 'dist/css/',
-  scripts: 'source/scripts/',
-  js: 'dist/js',
-  templates: 'source/templates/',
+  scripts: 'sources/scripts/',
+  js: 'dist/js/',
+  templates: 'sources/templates/',
   html: 'dist/',
 };
 
 // Одноразовая сборка проекта
 gulp.task('build', function() {
-  gulp.start('templates', 'styles', 'scripts', 'cache', 'img', 'fonts');
+  gulp.start('templates', 'styles', 'scripts');
 });
 
 // Запуск живой сборки
 gulp.task('live', function() {
-  gulp.start('templates', 'styles', 'scripts', 'img', 'cache', 'watch', 'server');
+  gulp.start('templates', 'styles', 'scripts', 'watch', 'server');
 });
 
 // Следим за изменениями файлов
@@ -40,6 +40,7 @@ gulp.task('watch', function() {
 // Собираем HTML
 gulp.task('templates', function() {
   gulp.src(paths.templates + '*.html')
+    .pipe(include())
     .pipe(plumber({errorHandler: onError}))
     .pipe(gulp.dest(paths.html))
     .pipe(reload({stream: true}));
@@ -52,8 +53,8 @@ gulp.task('styles', function() {
       outputStyle: 'compressed',
       errLogToConsole: true
     }).on('error', onError))
-    .pipe(postcss(autoprefixer))
-    .pipe(gulp.dest(paths.css));
+    .pipe(gulp.dest(paths.css))
+    .pipe(reload({stream: true}));
 });
 
 // Собираем JS
@@ -71,7 +72,7 @@ gulp.task('server', function() {
   portfinder.getPort(function(err, port) {
     browserSync({
       server: {
-        baseDir: ".",
+        baseDir: "dist/",
         serveStaticOptions: {
           extensions: ['html']
         }
